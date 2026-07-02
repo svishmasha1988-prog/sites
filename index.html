@@ -1,463 +1,878 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Расцвет — как вырастить доход с помощью нейросетей</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --forest:#0B3B2C;      /* глубокий лесной — текст */
-    --emerald:#0F8A52;     /* изумруд — акцент */
-    --emerald-deep:#0A6E41;
-    --grass:#39B667;       /* трава */
-    --lime:#8FE388;        /* яркий лайм — блик */
-    --lime-soft:#C9F0BE;
-    --mint:#EAF7EF;        /* мятный фон */
-    --mint-2:#DCF1E4;
-    --petal:#FBFEFC;       /* почти белый для карточек */
-    --white:#FFFFFF;
-    --ink-soft:#3B5A4C;
-    --line:#CFE9D8;
-    --shadow:0 18px 44px -22px rgba(11,59,44,.30);
-    --shadow-lg:0 40px 90px -40px rgba(11,59,44,.45);
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мария Елисеева — AI-ассистент для инфраструктурных процессов</title>
+  <meta name="description" content="Персональный AI-ассистент и система автоматизации рабочих процессов для инфраструктурного сопровождения: клининг, отходы, экология, аналитика, письма, Excel, договоры и задачи команды.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;420;480;530&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-mercury-blue: #5266eb;
+      --color-ghost-blue: #cdddff;
+      --color-deep-space: #171721;
+      --color-midnight-slate: #1e1e2a;
+      --color-graphite: #272735;
+      --color-lead: #70707d;
+      --color-starlight: #ededf3;
+      --color-silver: #c3c3cc;
+      --color-pure-white: #ffffff;
+      --page-max-width: 1200px;
+      --radius-md: 4px;
+      --radius-pill: 32px;
+    }
 
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{
-    font-family:'Manrope',system-ui,sans-serif;
-    color:var(--forest);
-    background:var(--white);
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-  }
-  ::selection{background:var(--lime);color:var(--forest)}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+    html {
+      scroll-behavior: smooth;
+      background: var(--color-deep-space);
+    }
 
-  /* фоновое сияние */
-  .bg-glow{position:fixed;inset:0;z-index:-2;pointer-events:none;
-    background:
-      radial-gradient(60% 45% at 82% 8%, rgba(143,227,136,.28), transparent 60%),
-      radial-gradient(55% 40% at 12% 30%, rgba(57,182,103,.16), transparent 60%),
-      radial-gradient(70% 50% at 50% 108%, rgba(15,138,82,.14), transparent 60%);
-  }
+    body {
+      min-height: 100vh;
+      font-family: Manrope, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.01em;
+      color: var(--color-starlight);
+      background: var(--color-midnight-slate);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
 
-  .eyebrow{
-    font-size:.74rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
-    color:var(--emerald);display:inline-flex;align-items:center;gap:.7em;
-  }
-  .eyebrow::before{content:"";width:26px;height:1.5px;background:var(--grass);display:inline-block}
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-  h1,h2,h3{font-family:'Cormorant',Georgia,serif;font-weight:600;line-height:1.04;letter-spacing:-.01em;color:var(--forest)}
+    button,
+    input {
+      font: inherit;
+    }
 
-  /* ---------- NAV ---------- */
-  header.nav{position:sticky;top:0;z-index:50;
-    backdrop-filter:blur(12px);
-    background:rgba(255,255,255,.72);
-    border-bottom:1px solid var(--line);
-  }
-  .nav-in{display:flex;align-items:center;justify-content:space-between;height:72px}
-  .brand{display:flex;align-items:center;gap:11px;font-family:'Cormorant',serif;font-weight:700;font-size:1.55rem;color:var(--forest);text-decoration:none;letter-spacing:.01em}
-  .brand .mark{width:34px;height:34px;flex:none}
-  .nav-links{display:flex;gap:30px;align-items:center}
-  .nav-links a{color:var(--ink-soft);text-decoration:none;font-size:.92rem;font-weight:600;transition:color .2s}
-  .nav-links a:hover{color:var(--emerald)}
-  .nav-cta{background:var(--forest);color:#fff !important;padding:10px 20px;border-radius:999px;font-size:.86rem}
-  .nav-cta:hover{background:var(--emerald)}
-  @media(max-width:760px){.nav-links a:not(.nav-cta){display:none}}
+    .page-shell {
+      background:
+        linear-gradient(180deg, rgba(23, 23, 33, 0) 0%, var(--color-midnight-slate) 720px),
+        var(--color-midnight-slate);
+    }
 
-  /* ---------- HERO ---------- */
-  .hero{position:relative;padding:78px 0 40px}
-  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
-  .hero h1{font-size:clamp(3rem,6.4vw,5.4rem)}
-  .hero h1 em{font-style:italic;color:var(--emerald);position:relative;white-space:nowrap}
-  .hero h1 .grow{display:inline-block;position:relative}
-  .hero h1 .grow::after{content:"";position:absolute;left:-2%;right:-2%;bottom:.06em;height:.34em;
-    background:linear-gradient(90deg,var(--lime),var(--lime-soft));border-radius:6px;z-index:-1;opacity:.85}
-  .hero p.lead{font-size:1.14rem;color:var(--ink-soft);max-width:34ch;margin:22px 0 6px;font-weight:500}
-  .hero .disclaimer{font-size:.9rem;color:var(--emerald-deep);margin-top:12px;font-weight:600;display:flex;gap:.55em;align-items:flex-start}
-  .hero .disclaimer svg{flex:none;margin-top:3px}
-  .cta-row{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
-  .btn{font-family:'Manrope';font-weight:700;font-size:1rem;padding:15px 30px;border-radius:999px;
-    text-decoration:none;display:inline-flex;align-items:center;gap:.6em;cursor:pointer;border:none;transition:transform .2s,box-shadow .2s,background .2s}
-  .btn-primary{background:linear-gradient(135deg,var(--grass),var(--emerald));color:#fff;box-shadow:0 14px 30px -12px rgba(15,138,82,.65)}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 40px -12px rgba(15,138,82,.7)}
-  .btn-ghost{background:var(--white);color:var(--forest);border:1.5px solid var(--line)}
-  .btn-ghost:hover{border-color:var(--grass);color:var(--emerald)}
+    .wrap {
+      width: min(100% - 40px, var(--page-max-width));
+      margin: 0 auto;
+    }
 
-  .hero-art{position:relative;display:flex;justify-content:center;align-items:center;min-height:420px}
-  .bloom{width:min(460px,92%);height:auto;filter:drop-shadow(0 30px 50px rgba(11,59,44,.22));animation:sway 9s ease-in-out infinite}
-  @keyframes sway{0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.6deg)}}
+    .site-header {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 20;
+      border-bottom: 1px solid rgba(112, 112, 125, 0.28);
+      background: rgba(23, 23, 33, 0.55);
+      backdrop-filter: blur(18px);
+    }
 
-  /* распускание лепестков */
-  .petal-anim{transform-box:fill-box;transform-origin:center;opacity:0;animation:bloom 1s cubic-bezier(.2,.8,.2,1) forwards}
-  @keyframes bloom{from{transform:scale(.05) rotate(-18deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
-  .leaf-anim{transform-box:fill-box;transform-origin:bottom center;opacity:0;animation:leafin .9s ease forwards}
-  @keyframes leafin{from{transform:scaleY(.1);opacity:0}to{transform:scaleY(1);opacity:1}}
-  .stem-draw{stroke-dasharray:400;stroke-dashoffset:400;animation:draw 1.1s ease forwards}
-  @keyframes draw{to{stroke-dashoffset:0}}
+    .nav {
+      display: flex;
+      min-height: 72px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
 
-  @media(max-width:860px){
-    .hero-grid{grid-template-columns:1fr;gap:6px}
-    .hero-art{order:-1;min-height:300px}
-    .bloom{width:min(320px,80%)}
-    .hero p.lead{max-width:none}
-  }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 420;
+      color: var(--color-starlight);
+      white-space: nowrap;
+    }
 
-  /* ---------- SECTION SHELL ---------- */
-  section{position:relative}
-  .band{padding:96px 0}
-  .band-mint{background:linear-gradient(180deg,var(--white),var(--mint) 22%,var(--mint) 78%,var(--white));}
-  .sec-head{max-width:660px;margin-bottom:52px}
-  .sec-head h2{font-size:clamp(2.3rem,4.6vw,3.6rem);margin-top:16px}
-  .sec-head p{color:var(--ink-soft);font-size:1.08rem;margin-top:16px;font-weight:500}
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(237, 237, 243, 0.42);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--color-pure-white);
+      background: rgba(82, 102, 235, 0.18);
+    }
 
-  /* ---------- VALUE ---------- */
-  .val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-  .val{background:var(--petal);border:1px solid var(--line);border-radius:22px;padding:30px 28px;box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s}
-  .val:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
-  .val .ic{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;margin-bottom:18px;
-    background:linear-gradient(135deg,var(--lime-soft),var(--mint-2))}
-  .val h3{font-size:1.6rem}
-  .val p{color:var(--ink-soft);margin-top:8px;font-size:.98rem}
-  @media(max-width:860px){.val-grid{grid-template-columns:1fr}}
+    .brand-mark::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-mercury-blue);
+    }
 
-  /* ---------- НАПРАВЛЕНИЯ ---------- */
-  .dir-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  .dir{position:relative;background:var(--white);border:1px solid var(--line);border-radius:22px;padding:28px 26px 26px;overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s}
-  .dir::before{content:"";position:absolute;right:-40px;top:-40px;width:120px;height:120px;border-radius:50%;
-    background:radial-gradient(circle at 30% 30%,var(--lime-soft),transparent 70%);opacity:.7;transition:transform .35s}
-  .dir:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--grass)}
-  .dir:hover::before{transform:scale(1.35)}
-  .dir .flower{width:44px;height:44px;margin-bottom:16px;position:relative;z-index:1}
-  .dir h3{font-size:1.5rem;position:relative;z-index:1}
-  .dir p{color:var(--ink-soft);margin-top:8px;font-size:.96rem;position:relative;z-index:1}
-  @media(max-width:860px){.dir-grid{grid-template-columns:1fr}}
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 14px;
+      font-weight: 420;
+      color: var(--color-starlight);
+    }
 
-  /* ---------- ПУТЬ (лоза) ---------- */
-  .path{position:relative;max-width:820px;margin:0 auto}
-  .path::before{content:"";position:absolute;left:27px;top:14px;bottom:40px;width:3px;
-    background:linear-gradient(180deg,var(--grass),var(--emerald));border-radius:3px;opacity:.35}
-  .step{position:relative;display:grid;grid-template-columns:58px 1fr;gap:26px;padding:20px 0;align-items:start}
-  .node{width:56px;height:56px;position:relative;z-index:2}
-  .node svg{width:100%;height:100%;transform:scale(.2);opacity:0;transition:transform .6s cubic-bezier(.2,.9,.25,1.3),opacity .5s}
-  .step.in .node svg{transform:scale(1);opacity:1}
-  .step-body{padding-top:4px;opacity:0;transform:translateX(14px);transition:all .55s ease .12s}
-  .step.in .step-body{opacity:1;transform:none}
-  .step-num{font-family:'Cormorant';font-weight:700;font-size:1.05rem;color:var(--emerald);letter-spacing:.05em}
-  .step-body h3{font-size:1.7rem;margin:2px 0 6px}
-  .step-body p{color:var(--ink-soft);font-size:1rem;max-width:52ch}
-  @media(max-width:560px){.step{grid-template-columns:46px 1fr;gap:18px}.path::before{left:21px}.node{width:44px;height:44px}}
+    .nav-links a {
+      opacity: 0.78;
+      transition: opacity 180ms ease, color 180ms ease;
+    }
 
-  /* ---------- НАВЫКИ ---------- */
-  .skills{display:flex;flex-wrap:wrap;gap:12px;max-width:820px}
-  .chip{background:var(--white);border:1.5px solid var(--line);border-radius:999px;padding:11px 20px;font-weight:600;font-size:.95rem;color:var(--forest);display:inline-flex;gap:.5em;align-items:center;transition:all .2s}
-  .chip:hover{border-color:var(--grass);background:var(--mint);transform:translateY(-2px)}
-  .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--grass)}
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      opacity: 1;
+      color: var(--color-ghost-blue);
+    }
 
-  /* ---------- ЧЕСТНО ---------- */
-  .honest{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:center;
-    background:var(--forest);color:#eafaf0;border-radius:30px;padding:52px 50px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
-  .honest h2{color:#fff;font-size:clamp(2rem,3.6vw,2.9rem)}
-  .honest .eyebrow{color:var(--lime)}
-  .honest .eyebrow::before{background:var(--grass)}
-  .honest ul{list-style:none;margin-top:18px;display:grid;gap:13px}
-  .honest li{display:flex;gap:.7em;align-items:flex-start;color:#cfe9d8;font-size:1.02rem;font-weight:500}
-  .honest li svg{flex:none;margin-top:4px}
-  .honest-art{display:grid;place-items:center}
-  .honest-art svg{width:200px;height:auto;filter:drop-shadow(0 20px 30px rgba(0,0,0,.3))}
-  @media(max-width:820px){.honest{grid-template-columns:1fr;padding:40px 30px;text-align:left}.honest-art{display:none}}
+    .header-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 8px 20px;
+      border-radius: 40px;
+      background: rgba(205, 221, 255, 0.16);
+      color: var(--color-starlight);
+      opacity: 1 !important;
+    }
 
-  /* ---------- CTA ---------- */
-  .cta-band{background:linear-gradient(135deg,var(--emerald-deep),var(--grass));color:#fff;border-radius:34px;
-    padding:70px 40px;text-align:center;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
-  .cta-band h2{color:#fff;font-size:clamp(2.4rem,5vw,4rem)}
-  .cta-band p{color:#e6fff0;max-width:44ch;margin:18px auto 0;font-size:1.12rem;font-weight:500}
-  .cta-band .btn-primary{background:#fff;color:var(--emerald-deep);margin-top:34px;box-shadow:0 18px 40px -14px rgba(0,0,0,.4)}
-  .cta-band .btn-primary:hover{background:var(--mint)}
-  .cta-flower{position:absolute;opacity:.5;pointer-events:none}
-  .cf1{top:-30px;left:-20px;width:160px;transform:rotate(-20deg)}
-  .cf2{bottom:-46px;right:-24px;width:210px;transform:rotate(25deg)}
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      isolation: isolate;
+      display: grid;
+      align-items: end;
+      overflow: hidden;
+      background: var(--color-deep-space);
+    }
 
-  /* ---------- FOOTER ---------- */
-  footer{padding:54px 0 40px;border-top:1px solid var(--line);margin-top:96px}
-  .foot-in{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
-  .foot-in .brand{font-size:1.35rem}
-  footer .note{color:var(--ink-soft);font-size:.86rem;max-width:46ch}
-  footer .made{color:var(--ink-soft);font-size:.82rem}
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      background-image: url("assets/maria-ai-command-center.png");
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.02);
+    }
 
-  @media(prefers-reduced-motion:reduce){
-    *{animation:none !important;transition:none !important}
-    .petal-anim,.leaf-anim,.step .node svg,.step-body{opacity:1 !important;transform:none !important}
-    .stem-draw{stroke-dashoffset:0 !important}
-    .bloom{animation:none}
-  }
-</style>
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(90deg, rgba(23, 23, 33, 0.88) 0%, rgba(23, 23, 33, 0.45) 45%, rgba(23, 23, 33, 0.68) 100%),
+        linear-gradient(180deg, rgba(23, 23, 33, 0.18) 0%, rgba(23, 23, 33, 0.3) 48%, var(--color-midnight-slate) 100%);
+    }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: minmax(0, 0.86fr) minmax(240px, 0.42fr);
+      gap: 48px;
+      align-items: end;
+      padding: 156px 0 92px;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      color: var(--color-silver);
+      font-size: 12px;
+      font-weight: 420;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .kicker::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--color-lead);
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-weight: 300;
+      letter-spacing: 0.015em;
+      color: var(--color-starlight);
+    }
+
+    h1 {
+      max-width: 920px;
+      font-size: clamp(44px, 7vw, 92px);
+      line-height: 1.06;
+    }
+
+    .hero-lead {
+      max-width: 690px;
+      margin-top: 28px;
+      color: var(--color-starlight);
+      font-size: clamp(17px, 1.7vw, 22px);
+      font-weight: 360;
+      line-height: 1.42;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 36px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 54px;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: var(--radius-pill);
+      padding: 16px 24px;
+      font-size: 16px;
+      font-weight: 480;
+      transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+      cursor: pointer;
+    }
+
+    .button-primary {
+      background: var(--color-mercury-blue);
+      color: var(--color-pure-white);
+    }
+
+    .button-secondary {
+      background: rgba(205, 221, 255, 0.14);
+      color: var(--color-starlight);
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      transform: translateY(-1px);
+    }
+
+    .button-primary:hover,
+    .button-primary:focus-visible {
+      background: #6375f1;
+    }
+
+    .button-secondary:hover,
+    .button-secondary:focus-visible {
+      background: rgba(205, 221, 255, 0.22);
+    }
+
+    .hero-panel {
+      border-left: 1px solid rgba(112, 112, 125, 0.5);
+      padding-left: 28px;
+      color: var(--color-silver);
+    }
+
+    .hero-panel strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--color-starlight);
+      font-size: 21px;
+      font-weight: 360;
+      line-height: 1.25;
+    }
+
+    .hero-panel p {
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    main {
+      position: relative;
+      background: var(--color-midnight-slate);
+    }
+
+    .section {
+      padding: 112px 0;
+      border-top: 1px solid rgba(112, 112, 125, 0.25);
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 56px;
+    }
+
+    .section-label {
+      margin-bottom: 16px;
+      color: var(--color-silver);
+      font-size: 12px;
+      font-weight: 420;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      font-size: clamp(34px, 4.2vw, 56px);
+      line-height: 1.12;
+    }
+
+    .section-copy {
+      margin-top: 20px;
+      color: var(--color-silver);
+      font-size: 18px;
+      font-weight: 360;
+      line-height: 1.55;
+    }
+
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--color-lead);
+      border-bottom: 1px solid var(--color-lead);
+    }
+
+    .metric {
+      min-height: 168px;
+      padding: 28px 24px;
+      border-right: 1px solid rgba(112, 112, 125, 0.7);
+    }
+
+    .metric:last-child {
+      border-right: 0;
+    }
+
+    .metric b {
+      display: block;
+      color: var(--color-starlight);
+      font-size: clamp(28px, 4vw, 49px);
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      max-width: 210px;
+      margin-top: 16px;
+      color: var(--color-silver);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .feature-list {
+      border-top: 1px solid var(--color-lead);
+    }
+
+    .feature-link {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 40px;
+      padding: 32px 0;
+      border-bottom: 1px solid rgba(112, 112, 125, 0.86);
+      color: var(--color-starlight);
+    }
+
+    .feature-link h3 {
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.15;
+    }
+
+    .feature-link p {
+      color: var(--color-silver);
+      font-size: 16px;
+      line-height: 1.58;
+    }
+
+    .feature-link:hover h3 {
+      color: var(--color-ghost-blue);
+    }
+
+    .ops-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(112, 112, 125, 0.75);
+      border: 1px solid rgba(112, 112, 125, 0.75);
+    }
+
+    .ops-card {
+      min-height: 264px;
+      padding: 32px;
+      background: var(--color-midnight-slate);
+    }
+
+    .ops-card .tag {
+      display: inline-flex;
+      margin-bottom: 42px;
+      color: var(--color-silver);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .ops-card h3 {
+      font-size: 28px;
+      line-height: 1.18;
+    }
+
+    .ops-card p {
+      margin-top: 18px;
+      color: var(--color-silver);
+      font-size: 15px;
+      line-height: 1.58;
+    }
+
+    .process {
+      display: grid;
+      grid-template-columns: 0.7fr 1.3fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .process-aside {
+      position: sticky;
+      top: 112px;
+      color: var(--color-silver);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .process-steps {
+      border-top: 1px solid var(--color-lead);
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(112, 112, 125, 0.78);
+    }
+
+    .step-num {
+      color: var(--color-silver);
+      font-size: 14px;
+      letter-spacing: 0.14em;
+    }
+
+    .step h3 {
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .step p {
+      margin-top: 10px;
+      color: var(--color-silver);
+      font-size: 15px;
+      line-height: 1.58;
+    }
+
+    .cta-section {
+      padding: 112px 0 128px;
+      background: var(--color-deep-space);
+      border-top: 1px solid rgba(112, 112, 125, 0.28);
+    }
+
+    .cta-inner {
+      display: grid;
+      grid-template-columns: 1fr 0.72fr;
+      gap: 56px;
+      align-items: end;
+    }
+
+    .cta-inner h2 {
+      max-width: 760px;
+      font-size: clamp(38px, 5vw, 65px);
+      line-height: 1.1;
+    }
+
+    .cta-inner p {
+      color: var(--color-silver);
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .signal {
+      display: grid;
+      grid-template-columns: 14px 1fr;
+      gap: 16px;
+      align-items: start;
+      margin-top: 28px;
+      color: var(--color-silver);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .signal::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      margin-top: 6px;
+      border-radius: 50%;
+      background: var(--color-mercury-blue);
+    }
+
+    .site-footer {
+      padding: 32px 0;
+      border-top: 1px solid rgba(112, 112, 125, 0.28);
+      background: var(--color-deep-space);
+      color: var(--color-silver);
+      font-size: 13px;
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--color-ghost-blue);
+      outline-offset: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .nav-links a:not(.header-pill) {
+        display: none;
+      }
+
+      .hero-content,
+      .cta-inner,
+      .process,
+      .feature-link {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-content {
+        padding-bottom: 64px;
+      }
+
+      .hero-panel {
+        max-width: 460px;
+      }
+
+      .metric-strip,
+      .ops-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .metric:nth-child(2) {
+        border-right: 0;
+      }
+
+      .metric:nth-child(-n + 2) {
+        border-bottom: 1px solid rgba(112, 112, 125, 0.7);
+      }
+
+      .process-aside {
+        position: static;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .wrap {
+        width: min(100% - 28px, var(--page-max-width));
+      }
+
+      .site-header {
+        position: absolute;
+      }
+
+      .nav {
+        min-height: 64px;
+      }
+
+      .brand span {
+        max-width: 190px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .hero::before {
+        background-position: 54% center;
+      }
+
+      .hero-content {
+        min-height: 100svh;
+        padding: 112px 0 44px;
+        align-content: end;
+      }
+
+      h1 {
+        font-size: clamp(38px, 14vw, 58px);
+      }
+
+      .hero-lead {
+        font-size: 16px;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .hero-panel {
+        border-left: 0;
+        border-top: 1px solid rgba(112, 112, 125, 0.5);
+        padding: 22px 0 0;
+      }
+
+      .section,
+      .cta-section {
+        padding: 76px 0;
+      }
+
+      .metric-strip,
+      .ops-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metric,
+      .metric:nth-child(2) {
+        border-right: 0;
+        border-bottom: 1px solid rgba(112, 112, 125, 0.7);
+      }
+
+      .metric:last-child {
+        border-bottom: 0;
+      }
+
+      .ops-card {
+        min-height: auto;
+        padding: 26px 22px;
+      }
+
+      .step {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="bg-glow"></div>
-
-<!-- ===== NAV ===== -->
-<header class="nav">
-  <div class="wrap nav-in">
-    <a href="#top" class="brand">
-      <svg class="mark" viewBox="0 0 100 100" fill="none">
-        <path d="M50 88 C50 70 44 60 40 54" stroke="#0F8A52" stroke-width="5" stroke-linecap="round"/>
-        <path d="M40 66 C30 64 24 58 22 50 C34 50 42 56 44 64Z" fill="#39B667"/>
-        <g>
-          <ellipse cx="50" cy="30" rx="11" ry="22" fill="#39B667"/>
-          <ellipse cx="50" cy="30" rx="11" ry="22" fill="#8FE388" transform="rotate(72 50 40)"/>
-          <ellipse cx="50" cy="30" rx="11" ry="22" fill="#0F8A52" transform="rotate(144 50 40)"/>
-          <ellipse cx="50" cy="30" rx="11" ry="22" fill="#39B667" transform="rotate(216 50 40)"/>
-          <ellipse cx="50" cy="30" rx="11" ry="22" fill="#8FE388" transform="rotate(288 50 40)"/>
-          <circle cx="50" cy="40" r="8" fill="#0B3B2C"/>
-        </g>
-      </svg>
-      Расцвет
-    </a>
-    <nav class="nav-links">
-      <a href="#pochemu">Почему ИИ</a>
-      <a href="#napravleniya">Направления</a>
-      <a href="#put">Путь роста</a>
-      <a href="#start" class="nav-cta">Начать</a>
-    </nav>
-  </div>
-</header>
-
-<!-- ===== HERO ===== -->
-<section class="hero wrap" id="top">
-  <div class="hero-grid">
-    <div class="hero-copy">
-      <span class="eyebrow">Нейросети · Навыки · Рост</span>
-      <h1>Вырастите <span class="grow">доход</span><br>с помощью <em>нейросетей</em></h1>
-      <p class="lead">Не волшебная кнопка, а мощный инструмент. Освойте реальные направления, навыки и понятный путь — и превратите ИИ в источник роста.</p>
-      <div class="disclaimer">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#0A6E41" stroke-width="2"/><path d="M12 7v6M12 16.5v.5" stroke="#0A6E41" stroke-width="2" stroke-linecap="round"/></svg>
-        Честно: результат зависит от ваших усилий, а не от обещаний лёгких денег.
-      </div>
-      <div class="cta-row">
-        <a href="#put" class="btn btn-primary">Пройти путь
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="wrap nav" aria-label="Главная навигация">
+        <a class="brand" href="#top" aria-label="Мария Елисеева AI">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Мария Елисеева · AI Ops</span>
         </a>
-        <a href="#napravleniya" class="btn btn-ghost">Смотреть направления</a>
+        <nav class="nav-links">
+          <a href="#system">Система</a>
+          <a href="#contours">Контуры</a>
+          <a href="#workflow">Процесс</a>
+          <a class="header-pill" href="#start">Собрать карту</a>
+        </nav>
       </div>
-    </div>
+    </header>
 
-    <div class="hero-art">
-      <!-- Большой распускающийся цветок -->
-      <svg class="bloom" viewBox="0 0 400 460" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="pg1" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#8FE388"/><stop offset="1" stop-color="#39B667"/>
-          </linearGradient>
-          <linearGradient id="pg2" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#39B667"/><stop offset="1" stop-color="#0F8A52"/>
-          </linearGradient>
-          <linearGradient id="stemg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#39B667"/><stop offset="1" stop-color="#0A6E41"/>
-          </linearGradient>
-        </defs>
-
-        <!-- стебель -->
-        <path class="stem-draw" d="M200 460 C200 380 196 340 200 300" stroke="url(#stemg)" stroke-width="9" stroke-linecap="round"/>
-        <!-- листья -->
-        <path class="leaf-anim" style="animation-delay:.15s" d="M198 400 C160 392 138 372 130 344 C168 346 194 366 200 396Z" fill="#39B667"/>
-        <path class="leaf-anim" style="animation-delay:.3s" d="M202 366 C240 360 262 342 270 316 C234 316 208 334 200 362Z" fill="#0F8A52"/>
-
-        <!-- задний слой лепестков -->
-        <g>
-          <g class="petal-anim" style="animation-delay:.35s"><path d="M200 150 C176 108 176 66 200 30 C224 66 224 108 200 150Z" fill="url(#pg2)" transform="rotate(0 200 150)"/></g>
-          <g class="petal-anim" style="animation-delay:.42s"><path d="M200 150 C176 108 176 66 200 30 C224 66 224 108 200 150Z" fill="url(#pg2)" transform="rotate(72 200 150)"/></g>
-          <g class="petal-anim" style="animation-delay:.49s"><path d="M200 150 C176 108 176 66 200 30 C224 66 224 108 200 150Z" fill="url(#pg2)" transform="rotate(144 200 150)"/></g>
-          <g class="petal-anim" style="animation-delay:.56s"><path d="M200 150 C176 108 176 66 200 30 C224 66 224 108 200 150Z" fill="url(#pg2)" transform="rotate(216 200 150)"/></g>
-          <g class="petal-anim" style="animation-delay:.63s"><path d="M200 150 C176 108 176 66 200 30 C224 66 224 108 200 150Z" fill="url(#pg2)" transform="rotate(288 200 150)"/></g>
-        </g>
-        <!-- передний слой -->
-        <g>
-          <g class="petal-anim" style="animation-delay:.72s"><path d="M200 150 C182 116 182 82 200 54 C218 82 218 116 200 150Z" fill="url(#pg1)" transform="rotate(36 200 150)"/></g>
-          <g class="petal-anim" style="animation-delay:.79s"><path d="M200 150 C182 116 182 82 200 54 C218 82 218 116 200 150Z" fill="url(#pg1)" transform="rotate(108 200 150)"/></g>
-          <g class="petal-anim" style="animation-delay:.86s"><path d="M200 150 C182 116 182 82 200 54 C218 82 218 116 200 150Z" fill="url(#pg1)" transform="rotate(180 200 150)"/></g>
-          <g class="petal-anim" style="animation-delay:.93s"><path d="M200 150 C182 116 182 82 200 54 C218 82 218 116 200 150Z" fill="url(#pg1)" transform="rotate(252 200 150)"/></g>
-          <g class="petal-anim" style="animation-delay:1s"><path d="M200 150 C182 116 182 82 200 54 C218 82 218 116 200 150Z" fill="url(#pg1)" transform="rotate(324 200 150)"/></g>
-        </g>
-        <!-- сердцевина -->
-        <circle class="petal-anim" style="animation-delay:1.1s" cx="200" cy="150" r="30" fill="#0B3B2C"/>
-        <circle class="petal-anim" style="animation-delay:1.15s" cx="200" cy="150" r="18" fill="#0F8A52"/>
-        <circle class="petal-anim" style="animation-delay:1.2s" cx="194" cy="144" r="6" fill="#8FE388"/>
-      </svg>
-    </div>
-  </div>
-</section>
-
-<!-- ===== ПОЧЕМУ ИИ ===== -->
-<section class="band band-mint" id="pochemu">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Почему это работает</span>
-      <h2>Нейросети — это не про «повезёт», а про рычаг</h2>
-      <p>ИИ не создаёт деньги из воздуха. Он умножает то, что вы уже умеете: экономит ваше время, открывает новые услуги и позволяет делать в одиночку то, что раньше требовало команды.</p>
-    </div>
-    <div class="val-grid">
-      <div class="val">
-        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0A6E41" stroke-width="2"/><path d="M12 7v5l3.5 2" stroke="#0A6E41" stroke-width="2" stroke-linecap="round"/></svg></div>
-        <h3>Экономия времени</h3>
-        <p>Черновики, тексты, код, разбор данных — за минуты. Освободившееся время идёт в то, что приносит деньги.</p>
+    <section class="hero" id="top">
+      <div class="wrap hero-content">
+        <div>
+          <div class="kicker">Личный AI-проект для инфраструктуры</div>
+          <h1>Командный центр для процессов, которые обычно держатся на ручном контроле.</h1>
+          <p class="hero-lead">
+            Персональный AI-ассистент Марии Елисеевой соединяет письма, Excel, договоры,
+            SAP-задачи, экологию, клининг, отходы и работу команды в понятную систему действий.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#system">Показать систему</a>
+            <a class="button button-secondary" href="#contours">Посмотреть модули</a>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="Фокус проекта">
+          <strong>Не чат-бот ради чат-бота.</strong>
+          <p>
+            Это рабочий слой над операционным хаосом: быстро понять входящий запрос,
+            подготовить черновик, разложить задачу, найти риск и довести процесс до следующего шага.
+          </p>
+        </aside>
       </div>
-      <div class="val">
-        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="#0A6E41" stroke-width="2" stroke-linecap="round"/></svg></div>
-        <h3>Новые услуги</h3>
-        <p>То, чего вы раньше не умели — дизайн, перевод, тексты, автоматизация — становится доступным навыком за недели, а не годы.</p>
+    </section>
+
+    <main>
+      <section class="section" id="system">
+        <div class="wrap">
+          <div class="section-head">
+            <div class="section-label">Что делает система</div>
+            <h2>Снимает с руководителя шум, но оставляет за ним решение.</h2>
+            <p class="section-copy">
+              AI-ассистент не подменяет экспертизу и не действует от имени человека.
+              Он собирает контекст, готовит варианты, подсвечивает несостыковки и помогает
+              команде двигаться по единому процессу.
+            </p>
+          </div>
+
+          <div class="metric-strip" aria-label="Основные эффекты">
+            <div class="metric">
+              <b>1</b>
+              <span>единая точка входа для писем, задач, документов и рабочих вопросов</span>
+            </div>
+            <div class="metric">
+              <b>7</b>
+              <span>направлений в фокусе: клининг, отходы, экология, SAP, Excel, договоры, команда</span>
+            </div>
+            <div class="metric">
+              <b>24/7</b>
+              <span>быстрая подготовка черновиков, чек-листов, протоколов и планов действий</span>
+            </div>
+            <div class="metric">
+              <b>0</b>
+              <span>автоматических обещаний без проверки человеком и подтверждённых данных</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="contours">
+        <div class="wrap">
+          <div class="section-head">
+            <div class="section-label">Рабочие контуры</div>
+            <h2>AI встроен туда, где теряется время: в тексты, таблицы, согласования и контроль.</h2>
+          </div>
+
+          <div class="feature-list">
+            <a class="feature-link" href="#workflow">
+              <h3>Деловая переписка</h3>
+              <p>Черновики ответов подрядчикам и коллегам: мягко, точно, без канцелярита, с понятной просьбой и следующим шагом.</p>
+            </a>
+            <a class="feature-link" href="#workflow">
+              <h3>Excel и аналитика затрат</h3>
+              <p>Логика таблиц, расхождения, медианы, отклонения, группировка объектов и подготовка объяснений для управленческих решений.</p>
+            </a>
+            <a class="feature-link" href="#workflow">
+              <h3>Договоры и допсоглашения</h3>
+              <p>Сравнение условий, формулировки обоснований, фиксация рисков, подготовка текста для согласования без выдуманных норм и обещаний.</p>
+            </a>
+            <a class="feature-link" href="#workflow">
+              <h3>SAP, TOR, MM и Directum</h3>
+              <p>Описание сквозных процессов от заявки до оплаты: статусы, деблокирование, заказы, счета, плановые затраты и контроль закрытия.</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="wrap">
+          <div class="section-head">
+            <div class="section-label">Модули ассистента</div>
+            <h2>Каждый модуль говорит на языке конкретного процесса.</h2>
+            <p class="section-copy">
+              Система полезна не потому, что “умеет всё”, а потому что знает рабочие контексты Марии:
+              сервисные планы, подрядчиков, экологические документы, счета, SAP-цепочки и командные роли.
+            </p>
+          </div>
+
+          <div class="ops-grid">
+            <article class="ops-card">
+              <span class="tag">Клининг</span>
+              <h3>Счета, акты, чек-листы, коэффициенты, допработы.</h3>
+              <p>Помогает формулировать запросы подрядчикам, сравнивать условия, структурировать сервисные планы и объяснять отклонения.</p>
+            </article>
+            <article class="ops-card">
+              <span class="tag">Отходы</span>
+              <h3>Объёмы, лимиты, регионы, стоимость, договоры.</h3>
+              <p>Собирает аргументы по счетам, подсвечивает недолимиты и помогает готовить понятные комментарии для согласований.</p>
+            </article>
+            <article class="ops-card">
+              <span class="tag">Экология</span>
+              <h3>ПЭК, НДВ, НМУ, НВОС, отчётность, вода.</h3>
+              <p>Держит структуру задач, помогает с письмами и планами, но оставляет экспертную проверку и решение за ответственным сотрудником.</p>
+            </article>
+            <article class="ops-card">
+              <span class="tag">Команда</span>
+              <h3>Задачи, протоколы, обучение, база знаний.</h3>
+              <p>Превращает встречи и хаотичные заметки в планы, чек-листы, инструкции и прозрачные зоны ответственности.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="workflow">
+        <div class="wrap process">
+          <aside class="process-aside">
+            <div class="section-label">Как работает</div>
+            <p>
+              Логика ассистента похожа на диспетчерский контур: сначала входящий сигнал,
+              потом контекст, затем действие. Никаких “магических ответов” без исходных данных.
+            </p>
+          </aside>
+
+          <div class="process-steps">
+            <div class="step">
+              <div class="step-num">01</div>
+              <div>
+                <h3>Принять входящий поток</h3>
+                <p>Письмо, протокол встречи, кусок договора, таблица, задача по подрядчику или вопрос команды попадают в одну рабочую логику.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">02</div>
+              <div>
+                <h3>Разложить по смыслу</h3>
+                <p>Что нужно решить, кто участвует, какие данные отсутствуют, где риск, какой следующий шаг нужен сейчас.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">03</div>
+              <div>
+                <h3>Подготовить рабочий результат</h3>
+                <p>Черновик письма, обоснование, список вопросов, протокол, план внедрения, структура таблицы или понятная инструкция.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">04</div>
+              <div>
+                <h3>Оставить контроль человеку</h3>
+                <p>Мария принимает решение, проверяет факты и отправляет текст сама. AI ускоряет подготовку, но не забирает ответственность.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section" id="start">
+        <div class="wrap cta-inner">
+          <div>
+            <div class="section-label">Следующий уровень</div>
+            <h2>Из личного помощника — в систему управления операционным знанием.</h2>
+          </div>
+          <div>
+            <p>
+              Дальше проект можно развивать как базу знаний, набор рабочих сценариев, шаблоны писем,
+              обучение для новых сотрудников и автоматизацию повторяющихся проверок.
+            </p>
+            <div class="signal">
+              Начинать стоит с самых частых задач: письма подрядчикам, протоколы встреч,
+              проверка счетов, объяснение отклонений и контроль статусов.
+            </div>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#top">Вернуться наверх</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-row">
+        <span>Мария Елисеева · персональный AI-проект</span>
+        <span>Инфраструктурное сопровождение · клининг · отходы · экология · SAP</span>
       </div>
-      <div class="val">
-        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.3 5 5.7.5-4.3 3.7 1.3 5.5L12 20l-5 2.7 1.3-5.5L4 8.5 9.7 8 12 3Z" stroke="#0A6E41" stroke-width="2" stroke-linejoin="round"/></svg></div>
-        <h3>Масштаб в одиночку</h3>
-        <p>Один человек с ИИ-инструментами делает объём небольшой студии. Меньше расходов — выше маржа.</p>
-      </div>
-    </div>
+    </footer>
   </div>
-</section>
-
-<!-- ===== НАПРАВЛЕНИЯ ===== -->
-<section class="band wrap" id="napravleniya">
-  <div class="sec-head">
-    <span class="eyebrow">Куда расти</span>
-    <h2>6 реальных направлений заработка</h2>
-    <p>Выберите одно, что ближе к вашим сильным сторонам. Глубина в одном направлении даёт больше, чем поверхностность в шести.</p>
-  </div>
-  <div class="dir-grid" id="dirGrid"></div>
-</section>
-
-<!-- ===== ПУТЬ РОСТА ===== -->
-<section class="band band-mint" id="put">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Пошаговый путь</span>
-      <h2>Как вырастить результат — от семени до цветка</h2>
-      <p>Это последовательность: каждый шаг опирается на предыдущий. Не перепрыгивайте — так растёт и растение, и доход.</p>
-    </div>
-    <div class="path" id="pathBox"></div>
-  </div>
-</section>
-
-<!-- ===== НАВЫКИ ===== -->
-<section class="band wrap" id="navyki">
-  <div class="sec-head">
-    <span class="eyebrow">Что осваивать</span>
-    <h2>Навыки и инструменты садовника</h2>
-    <p>Базовый набор, с которого начинают почти во всех направлениях. Осваивайте по мере надобности, а не всё сразу.</p>
-  </div>
-  <div class="skills" id="skills"></div>
-</section>
-
-<!-- ===== ЧЕСТНО ===== -->
-<section class="wrap" style="padding-bottom:20px">
-  <div class="honest">
-    <div>
-      <span class="eyebrow">Без иллюзий</span>
-      <h2>Честный разговор о деньгах</h2>
-      <ul>
-        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#8FE388" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Богатство — не гарантия, а возможность. Её ещё нужно реализовать трудом.</li>
-        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#8FE388" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Первые результаты обычно приходят через недели практики, а не за один вечер.</li>
-        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#8FE388" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Проверяйте факты за ИИ: он ошибается и выдумывает. Ответственность — на вас.</li>
-        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#8FE388" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Обходите стороной любые «схемы быстрого дохода» — это почти всегда ловушка.</li>
-      </ul>
-    </div>
-    <div class="honest-art">
-      <svg viewBox="0 0 200 220" fill="none">
-        <path d="M100 220 C100 160 96 130 100 100" stroke="#39B667" stroke-width="7" stroke-linecap="round"/>
-        <path d="M98 170 C64 164 44 146 38 122 C72 124 94 142 100 168Z" fill="#0F8A52"/>
-        <path d="M102 140 C136 134 156 116 162 92 C128 94 106 112 100 138Z" fill="#39B667"/>
-        <circle cx="100" cy="66" r="34" fill="#8FE388"/>
-        <circle cx="100" cy="66" r="20" fill="#0F8A52"/>
-        <circle cx="100" cy="66" r="9" fill="#0B3B2C"/>
-      </svg>
-    </div>
-  </div>
-</section>
-
-<!-- ===== CTA ===== -->
-<section class="band wrap" id="start">
-  <div class="cta-band">
-    <svg class="cta-flower cf1" viewBox="0 0 200 200" fill="none"><g opacity=".9"><ellipse cx="100" cy="70" rx="20" ry="40" fill="#fff"/><ellipse cx="100" cy="70" rx="20" ry="40" fill="#eafaf0" transform="rotate(72 100 90)"/><ellipse cx="100" cy="70" rx="20" ry="40" fill="#fff" transform="rotate(144 100 90)"/><ellipse cx="100" cy="70" rx="20" ry="40" fill="#eafaf0" transform="rotate(216 100 90)"/><ellipse cx="100" cy="70" rx="20" ry="40" fill="#fff" transform="rotate(288 100 90)"/><circle cx="100" cy="90" r="16" fill="#0A6E41"/></g></svg>
-    <svg class="cta-flower cf2" viewBox="0 0 200 200" fill="none"><g opacity=".85"><ellipse cx="100" cy="70" rx="22" ry="42" fill="#eafaf0"/><ellipse cx="100" cy="70" rx="22" ry="42" fill="#fff" transform="rotate(60 100 90)"/><ellipse cx="100" cy="70" rx="22" ry="42" fill="#eafaf0" transform="rotate(120 100 90)"/><ellipse cx="100" cy="70" rx="22" ry="42" fill="#fff" transform="rotate(180 100 90)"/><ellipse cx="100" cy="70" rx="22" ry="42" fill="#eafaf0" transform="rotate(240 100 90)"/><ellipse cx="100" cy="70" rx="22" ry="42" fill="#fff" transform="rotate(300 100 90)"/><circle cx="100" cy="90" r="17" fill="#0A6E41"/></g></svg>
-    <span class="eyebrow" style="color:#eafaf0;justify-content:center">Первый шаг — сегодня</span>
-    <h2>Посадите семя сейчас</h2>
-    <p>Выберите одно направление, откройте нейросеть и сделайте первый маленький проект уже сегодня. Сад начинается с одного семени.</p>
-    <a href="#napravleniya" class="btn btn-primary">Выбрать направление
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#0A6E41" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
-  </div>
-</section>
-
-<!-- ===== FOOTER ===== -->
-<footer>
-  <div class="wrap foot-in">
-    <div>
-      <a href="#top" class="brand">
-        <svg class="mark" viewBox="0 0 100 100" fill="none"><ellipse cx="50" cy="30" rx="11" ry="22" fill="#39B667"/><ellipse cx="50" cy="30" rx="11" ry="22" fill="#8FE388" transform="rotate(72 50 40)"/><ellipse cx="50" cy="30" rx="11" ry="22" fill="#0F8A52" transform="rotate(144 50 40)"/><ellipse cx="50" cy="30" rx="11" ry="22" fill="#39B667" transform="rotate(216 50 40)"/><ellipse cx="50" cy="30" rx="11" ry="22" fill="#8FE388" transform="rotate(288 50 40)"/><circle cx="50" cy="40" r="8" fill="#0B3B2C"/></svg>
-        Расцвет
-      </a>
-      <p class="note" style="margin-top:12px">Образовательная страница о разумном использовании нейросетей для роста дохода и навыков. Не является финансовой гарантией.</p>
-    </div>
-    <p class="made">Сделано с заботой о честном подходе · зелёно-белая тема</p>
-  </div>
-</footer>
-
-<script>
-  // ---- Направления ----
-  const dirs = [
-    {t:"Фриланс-услуги на ИИ", d:"Тексты, переводы, дизайн-заготовки, поддержка клиентов. Продаёте результат, а нейросеть ускоряет работу.", c:["#8FE388","#39B667"]},
-    {t:"Контент и медиа", d:"Блоги, сценарии, посты, короткие видео. ИИ помогает выпускать регулярно и в объёме, который держит аудиторию.", c:["#39B667","#0F8A52"]},
-    {t:"Автоматизация бизнеса", d:"Чат-боты, обработка заявок, разбор документов. Компании платят за сэкономленные часы сотрудников.", c:["#0F8A52","#0A6E41"]},
-    {t:"Свои цифровые продукты", d:"Шаблоны, гайды, мини-курсы, небольшие приложения. Создаёте один раз — продаёте многократно.", c:["#8FE388","#0F8A52"]},
-    {t:"Обучение и консалтинг", d:"Учите других применять ИИ в их работе. Экспертность растёт быстрее, чем кажется.", c:["#39B667","#8FE388"]},
-    {t:"Рост на основной работе", d:"Делаете свою работу быстрее и качественнее. Это ведёт к повышению, бонусам и новым проектам.", c:["#0F8A52","#39B667"]},
-  ];
-  const flowerSVG = (a,b)=>`<svg class="flower" viewBox="0 0 60 60" fill="none">
-    <ellipse cx="30" cy="20" rx="7.5" ry="15" fill="${a}"/>
-    <ellipse cx="30" cy="20" rx="7.5" ry="15" fill="${b}" transform="rotate(72 30 27)"/>
-    <ellipse cx="30" cy="20" rx="7.5" ry="15" fill="${a}" transform="rotate(144 30 27)"/>
-    <ellipse cx="30" cy="20" rx="7.5" ry="15" fill="${b}" transform="rotate(216 30 27)"/>
-    <ellipse cx="30" cy="20" rx="7.5" ry="15" fill="${a}" transform="rotate(288 30 27)"/>
-    <circle cx="30" cy="27" r="6" fill="#0B3B2C"/></svg>`;
-  document.getElementById('dirGrid').innerHTML = dirs.map(x=>`
-    <article class="dir">${flowerSVG(x.c[0],x.c[1])}<h3>${x.t}</h3><p>${x.d}</p></article>`).join('');
-
-  // ---- Путь ----
-  const steps = [
-    {t:"Выберите нишу", d:"Одно направление, близкое к вашим сильным сторонам. Узкий фокус растёт быстрее широкого."},
-    {t:"Освойте базовые инструменты", d:"2–3 нейросети под вашу задачу и умение писать понятные запросы (промпты). Этого достаточно для старта."},
-    {t:"Сделайте первый проект", d:"Маленький и настоящий: пост, лендинг, бота, разбор данных. Практика важнее теории."},
-    {t:"Соберите портфолио и отзывы", d:"Даже 3–5 работ и пара отзывов делают вас видимым. Показывайте результат, а не процесс."},
-    {t:"Найдите первых клиентов", d:"Знакомые, тематические чаты, биржи, соцсети. Первые заказы — самые сложные и самые важные."},
-    {t:"Систематизируйте и масштабируйте", d:"Шаблоны, повторяемые процессы, рост цен по мере опыта. Так небольшой доход превращается в устойчивый."},
-  ];
-  const nodeSVG = `<svg viewBox="0 0 60 60" fill="none">
-    <path d="M30 60 C30 46 28 40 30 33" stroke="#39B667" stroke-width="3.5" stroke-linecap="round"/>
-    <ellipse cx="30" cy="18" rx="8" ry="15" fill="#8FE388"/>
-    <ellipse cx="30" cy="18" rx="8" ry="15" fill="#39B667" transform="rotate(72 30 25)"/>
-    <ellipse cx="30" cy="18" rx="8" ry="15" fill="#0F8A52" transform="rotate(144 30 25)"/>
-    <ellipse cx="30" cy="18" rx="8" ry="15" fill="#39B667" transform="rotate(216 30 25)"/>
-    <ellipse cx="30" cy="18" rx="8" ry="15" fill="#8FE388" transform="rotate(288 30 25)"/>
-    <circle cx="30" cy="25" r="6.5" fill="#0B3B2C"/></svg>`;
-  document.getElementById('pathBox').innerHTML = steps.map((s,i)=>`
-    <div class="step"><div class="node">${nodeSVG}</div>
-    <div class="step-body"><div class="step-num">Шаг ${i+1}</div><h3>${s.t}</h3><p>${s.d}</p></div></div>`).join('');
-
-  // ---- Навыки ----
-  const chips = ["Формулировка запросов (промптинг)","Работа с текстовыми ИИ","Генерация изображений","Простая автоматизация","Проверка фактов","Основы маркетинга","Работа с таблицами","Общение с клиентами","Тайм-менеджмент"];
-  document.getElementById('skills').innerHTML = chips.map(c=>`<span class="chip"><span class="dot"></span>${c}</span>`).join('');
-
-  // ---- Анимация появления шагов ----
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach((e,idx)=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-  },{threshold:.35});
-  document.querySelectorAll('.step').forEach(s=>io.observe(s));
-</script>
 </body>
 </html>
